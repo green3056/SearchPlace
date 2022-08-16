@@ -2,6 +2,7 @@ package com.green.SearchPlace.adapter.in.web;
 
 import com.green.SearchPlace.application.port.in.SearchUseCase;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -12,9 +13,8 @@ public class SearchPlaceRestController {
         this.searchService = searchUseCase;
     }
 
-    @GetMapping("/")
-    public String search() {
-        return searchService.places();
+    @GetMapping("/search")
+    public String search(@RequestParam("keyword") String keyword) {
+        return searchService.places(keyword);
     }
-
 }
