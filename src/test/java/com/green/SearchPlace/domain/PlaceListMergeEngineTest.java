@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-class SortEngineTest {
+class PlaceListMergeEngineTest {
 
     @Test
     public void Duplicate_Place_Is_First() throws JsonProcessingException {
@@ -20,7 +20,7 @@ class SortEngineTest {
                 "{\"place_name\":\"곱 마포점\",\"address_name\":\"서울 마포구 도화동 179-11\",\"road_address_name\":\"서울 마포구 도화길 31-1\"}," +
                 "{\"place_name\":\"세광양대창 교대본점\",\"address_name\":\"서울 서초구 서초동 1571-19\",\"road_address_name\":\"서울 서초구 반포대로28길 79\"}" +
                 "]";
-        List<KakaoPlace> kakaoPlaceList = objectMapper.readValue(kakaoPlaceListJson, new TypeReference<List<KakaoPlace>>() {});
+        List<Place> kakaoPlaceList = objectMapper.readValue(kakaoPlaceListJson, new TypeReference<List<Place>>() {});
         String naverPlaceListJson = "[" +
                 "{\"title\":\"백화양<b>곱창</b>\",\"address\":\"부산광역시 중구 남포동6가 32\",\"roadAddress\":\"부산광역시 중구 자갈치로23번길 6\"}," +
                 "{\"title\":\"청어람 망원점\",\"address\":\"서울특별시 마포구 망원동 482-3\",\"roadAddress\":\"서울특별시 마포구 망원로 97\"}," +
@@ -28,7 +28,7 @@ class SortEngineTest {
                 "{\"title\":\"해성막창집 본점\",\"address\":\"부산광역시 해운대구 중동 1732\",\"roadAddress\":\"부산광역시 해운대구 중동1로19번길 29\"}," +
                 "{\"title\":\"평양집\",\"address\":\"서울특별시 용산구 한강로1가 137-1\",\"roadAddress\":\"서울특별시 용산구 한강대로 186\"}" +
                 "]";
-        List<NaverPlace> naverPlaceList = objectMapper.readValue(naverPlaceListJson, new TypeReference<List<NaverPlace>>() {});
+        List<Place> naverPlaceList = objectMapper.readValue(naverPlaceListJson, new TypeReference<List<Place>>() {});
 
         PlaceListMergeEngine placeMergeEngine = new PlaceListMergeEngine(kakaoPlaceList, naverPlaceList);
         placeMergeEngine.merge();
@@ -46,14 +46,14 @@ class SortEngineTest {
                 "{\"place_name\":\"별미곱창 본점\",\"address_name\":\"서울 송파구 방이동 64-1\",\"road_address_name\":\"서울 송파구 오금로11길 14\"}," +
                 "{\"place_name\":\"세광양대창 교대본점\",\"address_name\":\"서울 서초구 서초동 1571-19\",\"road_address_name\":\"서울 서초구 반포대로28길 79\"}" +
                 "]";
-        List<KakaoPlace> kakaoPlaceList = objectMapper.readValue(kakaoPlaceListJson, new TypeReference<List<KakaoPlace>>() {});
+        List<Place> kakaoPlaceList = objectMapper.readValue(kakaoPlaceListJson, new TypeReference<List<Place>>() {});
         String naverPlaceListJson = "[" +
                 "{\"title\":\"백화양<b>곱창</b>\",\"address\":\"부산광역시 중구 남포동6가 32\",\"roadAddress\":\"부산광역시 중구 자갈치로23번길 6\"}," +
                 "{\"title\":\"청어람 망원점\",\"address\":\"서울특별시 마포구 망원동 482-3\",\"roadAddress\":\"서울특별시 마포구 망원로 97\"}," +
                 "{\"title\":\"곱 마포점\",\"address\":\"서울특별시 마포구 도화동 179-11\",\"roadAddress\":\"서울특별시 마포구 도화길 31-1\"}," +
                 "{\"title\":\"평양집\",\"address\":\"서울특별시 용산구 한강로1가 137-1\",\"roadAddress\":\"서울특별시 용산구 한강대로 186\"}" +
                 "]";
-        List<NaverPlace> naverPlaceList = objectMapper.readValue(naverPlaceListJson, new TypeReference<List<NaverPlace>>() {});
+        List<Place> naverPlaceList = objectMapper.readValue(naverPlaceListJson, new TypeReference<List<Place>>() {});
 
         PlaceListMergeEngine placeMergeEngine = new PlaceListMergeEngine(kakaoPlaceList, naverPlaceList);
         placeMergeEngine.merge();
@@ -69,14 +69,14 @@ class SortEngineTest {
         ObjectMapper objectMapper = new ObjectMapper();
         String kakaoPlaceListJson = "[" +
                 "]";
-        List<KakaoPlace> kakaoPlaceList = objectMapper.readValue(kakaoPlaceListJson, new TypeReference<List<KakaoPlace>>() {});
+        List<Place> kakaoPlaceList = objectMapper.readValue(kakaoPlaceListJson, new TypeReference<List<Place>>() {});
         String naverPlaceListJson = "[" +
                 "{\"title\":\"백화양<b>곱창</b>\",\"address\":\"부산광역시 중구 남포동6가 32\",\"roadAddress\":\"부산광역시 중구 자갈치로23번길 6\"}," +
                 "{\"title\":\"곱 마포점\",\"address\":\"서울특별시 마포구 도화동 179-11\",\"roadAddress\":\"서울특별시 마포구 도화길 31-1\"}," +
                 "{\"title\":\"해성막창집 본점\",\"address\":\"부산광역시 해운대구 중동 1732\",\"roadAddress\":\"부산광역시 해운대구 중동1로19번길 29\"}," +
                 "{\"title\":\"평양집\",\"address\":\"서울특별시 용산구 한강로1가 137-1\",\"roadAddress\":\"서울특별시 용산구 한강대로 186\"}" +
                 "]";
-        List<NaverPlace> naverPlaceList = objectMapper.readValue(naverPlaceListJson, new TypeReference<List<NaverPlace>>() {});
+        List<Place> naverPlaceList = objectMapper.readValue(naverPlaceListJson, new TypeReference<List<Place>>() {});
 
         PlaceListMergeEngine placeMergeEngine = new PlaceListMergeEngine(kakaoPlaceList, naverPlaceList);
         placeMergeEngine.merge();
@@ -90,10 +90,10 @@ class SortEngineTest {
         String kakaoPlaceListJson = "[" +
                 "{\"place_name\":\"해성막창집 본점\",\"address_name\":\"부산 해운대구 중동 1732\",\"road_address_name\":\"부산 해운대구 중동1로19번길 29\"}" +
                 "]";
-        List<KakaoPlace> kakaoPlaceList = objectMapper.readValue(kakaoPlaceListJson, new TypeReference<List<KakaoPlace>>() {});
+        List<Place> kakaoPlaceList = objectMapper.readValue(kakaoPlaceListJson, new TypeReference<List<Place>>() {});
         String naverPlaceListJson = "[" +
                 "]";
-        List<NaverPlace> naverPlaceList = objectMapper.readValue(naverPlaceListJson, new TypeReference<List<NaverPlace>>() {});
+        List<Place> naverPlaceList = objectMapper.readValue(naverPlaceListJson, new TypeReference<List<Place>>() {});
 
         PlaceListMergeEngine placeMergeEngine = new PlaceListMergeEngine(kakaoPlaceList, naverPlaceList);
         placeMergeEngine.merge();
@@ -106,10 +106,10 @@ class SortEngineTest {
         ObjectMapper objectMapper = new ObjectMapper();
         String kakaoPlaceListJson = "[" +
                 "]";
-        List<KakaoPlace> kakaoPlaceList = objectMapper.readValue(kakaoPlaceListJson, new TypeReference<List<KakaoPlace>>() {});
+        List<Place> kakaoPlaceList = objectMapper.readValue(kakaoPlaceListJson, new TypeReference<List<Place>>() {});
         String naverPlaceListJson = "[" +
                 "]";
-        List<NaverPlace> naverPlaceList = objectMapper.readValue(naverPlaceListJson, new TypeReference<List<NaverPlace>>() {});
+        List<Place> naverPlaceList = objectMapper.readValue(naverPlaceListJson, new TypeReference<List<Place>>() {});
 
         PlaceListMergeEngine placeMergeEngine = new PlaceListMergeEngine(kakaoPlaceList, naverPlaceList);
         placeMergeEngine.merge();

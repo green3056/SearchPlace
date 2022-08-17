@@ -8,10 +8,8 @@ import com.green.SearchPlace.application.port.in.PlaceListUseCase;
 import com.green.SearchPlace.application.port.out.KakaoSearchPlaceFeignClient;
 import com.green.SearchPlace.application.port.out.NaverSearchPlaceFeignClient;
 import com.green.SearchPlace.application.port.out.QueryCountPort;
-import com.green.SearchPlace.domain.KakaoPlace;
-import com.green.SearchPlace.domain.NaverPlace;
+import com.green.SearchPlace.domain.Place;
 import com.green.SearchPlace.domain.PlaceListMergeEngine;
-import com.green.SearchPlace.domain.ResponsePlace;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -37,15 +35,15 @@ class PlaceListService implements PlaceListUseCase {
     public String places(String keyword) throws JsonProcessingException {
         searchCounter.incrementSearchCount(keyword);
         JsonNode kakaoPlaceListNode = kakaoSearchFeignClient.search(keyword).path("documents");
-        List<KakaoPlace> kakaoPlaces = objectMapper.readValue(kakaoPlaceListNode.toString(), new TypeReference<List<KakaoPlace>>() {});
+        List<Place> kakaoPlaces = objectMapper.readValue(kakaoPlaceListNode.toString(), new TypeReference<List<Place>>() {});
 
         JsonNode naverPlaceListNode = naverSearchPlaceFeignClient.search(keyword).path("items");
-        List<NaverPlace> naverPlaces = objectMapper.readValue(naverPlaceListNode.toString(), new TypeReference<List<NaverPlace>>() {});
+        List<Place> naverPlaces = objectMapper.readValue(naverPlaceListNode.toString(), new TypeReference<List<Place>>() {});
 
         PlaceListMergeEngine placeMergeEngine = new PlaceListMergeEngine(kakaoPlaces, naverPlaces);
         placeMergeEngine.merge();
 
-        List<ResponsePlace> mergedPlaceList = placeMergeEngine.getMergedPlaceList();
+        List<Place> mergedPlaceList = placeMergeEngine.getMergedPlaceList();
         return objectMapper.writeValueAsString(mergedPlaceList);
     }
 

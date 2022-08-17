@@ -5,42 +5,42 @@ import java.util.List;
 
 public class PlaceListMergeEngine {
 
-    private final List<KakaoPlace> kakaoPlaceList;
-    private final List<NaverPlace> naverPlaceList;
-    private final List<ResponsePlace> mergedPlaceList;
+    private final List<Place> kakaoPlaceList;
+    private final List<Place> naverPlaceList;
+    private final List<Place> mergedPlaceList;
 
-    public PlaceListMergeEngine(List<KakaoPlace> kakaoPlaceList, List<NaverPlace> naverPlaceList) {
+    public PlaceListMergeEngine(List<Place> kakaoPlaceList, List<Place> naverPlaceList) {
         this.kakaoPlaceList = new ArrayList<>(kakaoPlaceList);
         this.naverPlaceList = new ArrayList<>(naverPlaceList);
         this.mergedPlaceList = new ArrayList<>();
     }
 
     public void merge() {
-        for (KakaoPlace kakaoPlace : kakaoPlaceList) {
-            for (NaverPlace naverPlace : naverPlaceList) {
-                Address kakaoPlaceAddress = new Address(kakaoPlace.getAddress_name());
-                Address naverPlaceAddress = new Address(naverPlace.getAddress());
-                if (kakaoPlaceAddress.equals(naverPlaceAddress)){
-                    mergedPlaceList.add(new ResponsePlace(kakaoPlace));
-                    kakaoPlace.setPlace_name("");
+        for (Place kakaoPlace : kakaoPlaceList) {
+            for (Place naverPlace : naverPlaceList) {
+                Place kakaoResponsePlace = kakaoPlace.toResponsePlace();
+                Place naverResponsePlace = naverPlace.toResponsePlace();
+                if (kakaoResponsePlace.equals(naverResponsePlace)){
+                    mergedPlaceList.add(kakaoResponsePlace);
+                    kakaoPlace.setTitle("");
                     naverPlace.setTitle("");
                     break;
                 }
             }
         }
-        for (KakaoPlace kakaoPlace : kakaoPlaceList) {
-            if (!kakaoPlace.getPlace_name().equals("")) {
-                mergedPlaceList.add(new ResponsePlace(kakaoPlace));
+        for (Place kakaoPlace : kakaoPlaceList) {
+            if (!kakaoPlace.getTitle().equals("")) {
+                mergedPlaceList.add(kakaoPlace.toResponsePlace());
             }
         }
-        for (NaverPlace naverPlace : naverPlaceList) {
+        for (Place naverPlace : naverPlaceList) {
             if (!naverPlace.getTitle().equals("")) {
-                mergedPlaceList.add(new ResponsePlace(naverPlace));
+                mergedPlaceList.add(naverPlace.toResponsePlace());
             }
         }
     }
 
-    public List<ResponsePlace> getMergedPlaceList() {
+    public List<Place> getMergedPlaceList() {
         return mergedPlaceList;
     }
 
