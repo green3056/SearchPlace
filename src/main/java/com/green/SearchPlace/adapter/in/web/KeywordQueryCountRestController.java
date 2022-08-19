@@ -1,34 +1,37 @@
 package com.green.SearchPlace.adapter.in.web;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.green.SearchPlace.adapter.out.persistence.KeywordQuery;
-import com.green.SearchPlace.adapter.out.persistence.QueryCountPersistenceAdapter;
+import com.green.SearchPlace.application.port.in.QueryCountListUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 public class KeywordQueryCountRestController {
 
-    private final QueryCountPersistenceAdapter queryCounter;
-    private final ObjectMapper objectMapper;
+    private final QueryCountListUseCase queryCountListService;
 
     @Autowired
-    public KeywordQueryCountRestController(QueryCountPersistenceAdapter queryCounter) {
-        this.queryCounter = queryCounter;
-        this.objectMapper = new ObjectMapper();
+    public KeywordQueryCountRestController(QueryCountListUseCase queryCountListService) {
+        this.queryCountListService = queryCountListService;
     }
 
     @GetMapping("/v1/place/rank")
-    public String keywordQueryCountTop10() throws JsonProcessingException {
-        List<KeywordQuery> keywordQueryList = queryCounter.keywordQueryCountTop10();
-        return objectMapper
-                .writer()
-                .withRootName("keywordQueryList")
-                .writeValueAsString(keywordQueryList);
+    public ResponseEntity<String> keywordQueryCountTop10() {
+        try {
+            return ResponseEntity
+                    .ok()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(queryCountListService.keywordQueryCountTop10());
+        }
+        catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return ResponseEntity
+                    .internalServerError()
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .body("JsonProcessingException");
+        }
     }
 }
