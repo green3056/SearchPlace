@@ -34,6 +34,7 @@ class PlaceListService implements PlaceListUseCase {
     @Override
     public String places(String keyword) throws JsonProcessingException {
         searchCounter.incrementSearchCount(keyword);
+
         JsonNode kakaoPlaceListNode = kakaoSearchFeignClient.search(keyword).path("documents");
         List<Place> kakaoPlaces = objectMapper.readValue(kakaoPlaceListNode.toString(), new TypeReference<List<Place>>() {});
 
@@ -44,7 +45,10 @@ class PlaceListService implements PlaceListUseCase {
         placeMergeEngine.merge();
 
         List<Place> mergedPlaceList = placeMergeEngine.getMergedPlaceList();
-        return objectMapper.writeValueAsString(mergedPlaceList);
+        return objectMapper
+                .writer()
+                .withRootName("placeList")
+                .writeValueAsString(mergedPlaceList);
     }
 
 }
