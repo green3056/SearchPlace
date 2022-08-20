@@ -8,7 +8,6 @@ import com.green.SearchPlace.application.port.in.SearchPlaceUseCase;
 import com.green.SearchPlace.application.port.out.KakaoSearchAddressFeignClient;
 import com.green.SearchPlace.application.port.out.KakaoSearchPlaceFeignClient;
 import com.green.SearchPlace.application.port.out.NaverSearchPlaceFeignClient;
-import com.green.SearchPlace.application.port.out.QueryCountRepository;
 import com.green.SearchPlace.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,15 +17,13 @@ import java.util.List;
 @Service
 class SearchPlaceService implements SearchPlaceUseCase {
 
-    private final QueryCountRepository queryCountRepository;
     private final KakaoSearchPlaceFeignClient kakaoSearchFeignClient;
     private final NaverSearchPlaceFeignClient naverSearchPlaceFeignClient;
     private final KakaoSearchAddressFeignClient kakaoSearchAddressFeignClient;
     private final ObjectMapper objectMapper;
 
     @Autowired
-    SearchPlaceService(QueryCountRepository queryCountRepository, KakaoSearchPlaceFeignClient kakaoSearchFeignClient, NaverSearchPlaceFeignClient naverSearchPlaceFeignClient, KakaoSearchAddressFeignClient kakaoSearchAddressFeignClient) {
-        this.queryCountRepository = queryCountRepository;
+    SearchPlaceService(KakaoSearchPlaceFeignClient kakaoSearchFeignClient, NaverSearchPlaceFeignClient naverSearchPlaceFeignClient, KakaoSearchAddressFeignClient kakaoSearchAddressFeignClient) {
         this.kakaoSearchFeignClient = kakaoSearchFeignClient;
         this.naverSearchPlaceFeignClient = naverSearchPlaceFeignClient;
         this.kakaoSearchAddressFeignClient = kakaoSearchAddressFeignClient;
@@ -35,14 +32,6 @@ class SearchPlaceService implements SearchPlaceUseCase {
 
     @Override
     public String SearchPlace(String keyword) throws JsonProcessingException {
-        KeywordQuery keywordQuery = queryCountRepository.findByKeyword(keyword).orElse(null);
-        if (keywordQuery == null) {
-           queryCountRepository.save(new KeywordQuery(keyword, 1L));
-        } else {
-            keywordQuery.implementCount();
-            queryCountRepository.save(keywordQuery);
-        }
-
         JsonNode kakaoPlaceListNode = kakaoSearchFeignClient.search(keyword).path("documents");
         List<KakaoPlace> kakaoPlaces = objectMapper.readValue(kakaoPlaceListNode.toString(), new TypeReference<List<KakaoPlace>>() {});
 
