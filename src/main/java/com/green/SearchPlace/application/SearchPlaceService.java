@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.green.SearchPlace.application.port.in.PlaceListUseCase;
+import com.green.SearchPlace.application.port.in.SearchPlaceUseCase;
 import com.green.SearchPlace.application.port.out.KakaoSearchAddressFeignClient;
 import com.green.SearchPlace.application.port.out.KakaoSearchPlaceFeignClient;
 import com.green.SearchPlace.application.port.out.NaverSearchPlaceFeignClient;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-class PlaceListService implements PlaceListUseCase {
+class SearchPlaceService implements SearchPlaceUseCase {
 
     private final QueryCountRepository queryCountRepository;
     private final KakaoSearchPlaceFeignClient kakaoSearchFeignClient;
@@ -25,7 +25,7 @@ class PlaceListService implements PlaceListUseCase {
     private final ObjectMapper objectMapper;
 
     @Autowired
-    PlaceListService(QueryCountRepository queryCountRepository, KakaoSearchPlaceFeignClient kakaoSearchFeignClient, NaverSearchPlaceFeignClient naverSearchPlaceFeignClient, KakaoSearchAddressFeignClient kakaoSearchAddressFeignClient) {
+    SearchPlaceService(QueryCountRepository queryCountRepository, KakaoSearchPlaceFeignClient kakaoSearchFeignClient, NaverSearchPlaceFeignClient naverSearchPlaceFeignClient, KakaoSearchAddressFeignClient kakaoSearchAddressFeignClient) {
         this.queryCountRepository = queryCountRepository;
         this.kakaoSearchFeignClient = kakaoSearchFeignClient;
         this.naverSearchPlaceFeignClient = naverSearchPlaceFeignClient;
@@ -34,10 +34,10 @@ class PlaceListService implements PlaceListUseCase {
     }
 
     @Override
-    public String places(String keyword) throws JsonProcessingException {
+    public String SearchPlace(String keyword) throws JsonProcessingException {
         KeywordQuery keywordQuery = queryCountRepository.findByKeyword(keyword).orElse(null);
         if (keywordQuery == null) {
-           queryCountRepository.save(new KeywordQuery(keyword, 1));
+           queryCountRepository.save(new KeywordQuery(keyword, 1L));
         } else {
             keywordQuery.implementCount();
             queryCountRepository.save(keywordQuery);

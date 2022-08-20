@@ -7,5 +7,8 @@ import lombok.Setter;
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class KakaoAddress {
+
     private String address_name;
+
 }
+

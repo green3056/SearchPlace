@@ -2,6 +2,8 @@ package com.green.SearchPlace.application.port.in;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-public interface QueryCountListUseCase {
-    String keywordQueryCountTop10() throws JsonProcessingException;
+public interface SearchPlaceUseCase {
+
+    String SearchPlace(String keyword) throws JsonProcessingException;
+
 }

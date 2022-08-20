@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class NaverAuthFeignConfigure {
+public class NaverAuthFeignConfig {
 
     @Bean
     RequestInterceptor naverAuthFeignInterceptor(@Value("${restApi.naver.clientId}") String clientId,
@@ -16,4 +16,5 @@ public class NaverAuthFeignConfigure {
             requestTemplate.header("X-Naver-Client-Secret", clientSecret);
         };
     }
+
 }

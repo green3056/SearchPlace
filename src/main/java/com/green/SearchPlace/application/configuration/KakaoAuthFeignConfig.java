@@ -6,7 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class KakaoAuthFeignConfigure {
+public class KakaoAuthFeignConfig {
+
     @Bean
     public RequestInterceptor kakaoAuthFeignInterceptor(@Value("${restApi.kakao.restApiKey}") String restApiKey) {
         return requestTemplate -> requestTemplate.header("Authorization", restApiKey);

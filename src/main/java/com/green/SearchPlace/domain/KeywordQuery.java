@@ -1,4 +1,4 @@
-package com.green.SearchPlace.application;
+package com.green.SearchPlace.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +19,7 @@ public class KeywordQuery {
     @Column
     private String keyword;
     @Column
-    private Integer count;
+    private Long count;
 
     public void implementCount() {
         count += 1;

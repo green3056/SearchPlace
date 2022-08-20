@@ -1,7 +1,7 @@
 package com.green.SearchPlace.adapter.in.web;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.green.SearchPlace.application.port.in.PlaceListUseCase;
+import com.green.SearchPlace.application.port.in.SearchPlaceUseCase;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class PlaceListRestController {
-    private final PlaceListUseCase listPlaceService;
+public class SearchPlaceRestController {
+    private final SearchPlaceUseCase searchPlaceService;
 
-    public PlaceListRestController(PlaceListUseCase listPlaceService) {
-        this.listPlaceService = listPlaceService;
+    public SearchPlaceRestController(SearchPlaceUseCase listPlaceService) {
+        this.searchPlaceService = listPlaceService;
     }
 
     @GetMapping("/v1/place")
@@ -22,7 +22,7 @@ public class PlaceListRestController {
             return ResponseEntity.
                     ok()
                     .contentType(MediaType.APPLICATION_JSON)
-                    .body(listPlaceService.places(keyword));
+                    .body(searchPlaceService.SearchPlace(keyword));
         }
         catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -32,4 +32,5 @@ public class PlaceListRestController {
                     .body("JsonProcessingException");
         }
     }
+
 }

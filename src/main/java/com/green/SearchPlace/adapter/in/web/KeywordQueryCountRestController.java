@@ -1,7 +1,7 @@
 package com.green.SearchPlace.adapter.in.web;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.green.SearchPlace.application.port.in.QueryCountListUseCase;
+import com.green.SearchPlace.application.port.in.KeywordQueryCountUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,15 +11,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class KeywordQueryCountRestController {
 
-    private final QueryCountListUseCase queryCountListService;
+    private final KeywordQueryCountUseCase queryCountListService;
 
     @Autowired
-    public KeywordQueryCountRestController(QueryCountListUseCase queryCountListService) {
+    public KeywordQueryCountRestController(KeywordQueryCountUseCase queryCountListService) {
         this.queryCountListService = queryCountListService;
     }
 
     @GetMapping("/v1/place/rank")
-    public ResponseEntity<String> keywordQueryCountTop10() {
+    public ResponseEntity<String> placeKeywordQueryCountTop10() {
         try {
             return ResponseEntity
                     .ok()
@@ -34,4 +34,5 @@ public class KeywordQueryCountRestController {
                     .body("JsonProcessingException");
         }
     }
+
 }
