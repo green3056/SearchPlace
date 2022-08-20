@@ -7,19 +7,18 @@ public class PlaceListMergeEngine {
 
     private final List<Place> kakaoPlaceList;
     private final List<Place> naverPlaceList;
-    private final List<Place> mergedPlaceList;
+    private final List<ResponsePlace> mergedPlaceList = new ArrayList<>();
 
     public PlaceListMergeEngine(List<Place> kakaoPlaceList, List<Place> naverPlaceList) {
         this.kakaoPlaceList = new ArrayList<>(kakaoPlaceList);
         this.naverPlaceList = new ArrayList<>(naverPlaceList);
-        this.mergedPlaceList = new ArrayList<>();
     }
 
     public void merge() {
         for (Place kakaoPlace : kakaoPlaceList) {
             for (Place naverPlace : naverPlaceList) {
-                Place kakaoResponsePlace = kakaoPlace.toResponsePlace();
-                Place naverResponsePlace = naverPlace.toResponsePlace();
+                ResponsePlace kakaoResponsePlace = kakaoPlace.toResponsePlace("kakao");
+                ResponsePlace naverResponsePlace = naverPlace.toResponsePlace("naver");
                 if (kakaoResponsePlace.equals(naverResponsePlace)){
                     mergedPlaceList.add(kakaoResponsePlace);
                     kakaoPlace.setTitle("");
@@ -30,17 +29,17 @@ public class PlaceListMergeEngine {
         }
         for (Place kakaoPlace : kakaoPlaceList) {
             if (!kakaoPlace.getTitle().equals("")) {
-                mergedPlaceList.add(kakaoPlace.toResponsePlace());
+                mergedPlaceList.add(kakaoPlace.toResponsePlace("kakao"));
             }
         }
         for (Place naverPlace : naverPlaceList) {
             if (!naverPlace.getTitle().equals("")) {
-                mergedPlaceList.add(naverPlace.toResponsePlace());
+                mergedPlaceList.add(naverPlace.toResponsePlace("naver"));
             }
         }
     }
 
-    public List<Place> getMergedPlaceList() {
+    public List<ResponsePlace> getMergedPlaceList() {
         return mergedPlaceList;
     }
 

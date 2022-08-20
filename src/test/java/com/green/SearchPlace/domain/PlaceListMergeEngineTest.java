@@ -22,10 +22,10 @@ class PlaceListMergeEngineTest {
                 "]";
         List<Place> kakaoPlaceList = objectMapper.readValue(kakaoPlaceListJson, new TypeReference<List<Place>>() {});
         String naverPlaceListJson = "[" +
-                "{\"title\":\"백화양<b>곱창</b>\",\"address\":\"부산광역시 중구 남포동6가 32\",\"roadAddress\":\"부산광역시 중구 자갈치로23번길 6\"}," +
+                "{\"title\":\"백화양<b>곱창</b>\",\"address\":\"부산 중구 남포동6가 32\",\"roadAddress\":\"부산광역시 중구 자갈치로23번길 6\"}," +
                 "{\"title\":\"청어람 망원점\",\"address\":\"서울특별시 마포구 망원동 482-3\",\"roadAddress\":\"서울특별시 마포구 망원로 97\"}," +
-                "{\"title\":\"곱 마포점\",\"address\":\"서울특별시 마포구 도화동 179-11\",\"roadAddress\":\"서울특별시 마포구 도화길 31-1\"}," +
-                "{\"title\":\"해성막창집 본점\",\"address\":\"부산광역시 해운대구 중동 1732\",\"roadAddress\":\"부산광역시 해운대구 중동1로19번길 29\"}," +
+                "{\"title\":\"곱 마포점\",\"address\":\"서울 마포구 도화동 179-11\",\"roadAddress\":\"서울특별시 마포구 도화길 31-1\"}," +
+                "{\"title\":\"해성막창집 본점\",\"address\":\"부산 해운대구 중동 1732\",\"roadAddress\":\"부산광역시 해운대구 중동1로19번길 29\"}," +
                 "{\"title\":\"평양집\",\"address\":\"서울특별시 용산구 한강로1가 137-1\",\"roadAddress\":\"서울특별시 용산구 한강대로 186\"}" +
                 "]";
         List<Place> naverPlaceList = objectMapper.readValue(naverPlaceListJson, new TypeReference<List<Place>>() {});

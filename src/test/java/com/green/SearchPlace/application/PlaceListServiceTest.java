@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.green.SearchPlace.application.port.out.KakaoSearchAddressFeignClient;
 import com.green.SearchPlace.application.port.out.KakaoSearchPlaceFeignClient;
 import com.green.SearchPlace.application.port.out.NaverSearchPlaceFeignClient;
 import com.green.SearchPlace.application.port.out.QueryCountRepository;
@@ -27,6 +28,8 @@ class PlaceListServiceTest {
 
     @MockBean
     private KakaoSearchPlaceFeignClient kakaoSearchPlaceFeignClient;
+    @MockBean
+    private KakaoSearchAddressFeignClient kakaoSearchAddressFeignClient;
     @MockBean
     private NaverSearchPlaceFeignClient naverSearchPlaceFeignClient;
     @Autowired
@@ -59,8 +62,13 @@ class PlaceListServiceTest {
                     "{\"title\":\"평양집\",\"address\":\"서울특별시 용산구 한강로1가 137-1\",\"roadAddress\":\"서울특별시 용산구 한강대로 186\"}" +
                 "]}");
         Mockito.when(naverSearchPlaceFeignClient.search(SEARCH_KEYWORD)).thenReturn(naverJsonNode);
+        Mockito.when(kakaoSearchAddressFeignClient.search("부산광역시 해운대구 중동 1732")).thenReturn(objectMapper.readTree("{\"documents\": [{\"address_name\":\"부산 해운대구 중동 1732\"}]}"));
+        Mockito.when(kakaoSearchAddressFeignClient.search("부산광역시 중구 남포동6가 32")).thenReturn(objectMapper.readTree("{\"documents\": [{\"address_name\":\"부산 중구 남포동6가 32\"}]}"));
+        Mockito.when(kakaoSearchAddressFeignClient.search("서울특별시 마포구 도화동 179-11")).thenReturn(objectMapper.readTree("{\"documents\": [{\"address_name\":\"서울 마포구 도화동 179-11\"}]}"));
+        Mockito.when(kakaoSearchAddressFeignClient.search("서울특별시 마포구 망원동 482-3")).thenReturn(objectMapper.readTree("{\"documents\": []}"));
+        Mockito.when(kakaoSearchAddressFeignClient.search("서울특별시 용산구 한강로1가 137-1")).thenReturn(objectMapper.readTree("{\"documents\": []}"));
 
-        PlaceListService placeListService = new PlaceListService(queryCountRepository, kakaoSearchPlaceFeignClient, naverSearchPlaceFeignClient);
+        PlaceListService placeListService = new PlaceListService(queryCountRepository, kakaoSearchPlaceFeignClient, naverSearchPlaceFeignClient, kakaoSearchAddressFeignClient);
         String result = placeListService.places(SEARCH_KEYWORD);
 
         // 키워드 검색 횟수가 카운팅되고 있는지 확인합니다.
