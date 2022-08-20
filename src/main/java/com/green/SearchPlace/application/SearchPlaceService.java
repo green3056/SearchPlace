@@ -20,42 +20,51 @@ class SearchPlaceService implements SearchPlaceUseCase {
     private final KakaoSearchPlaceFeignClient kakaoSearchFeignClient;
     private final NaverSearchPlaceFeignClient naverSearchPlaceFeignClient;
     private final KakaoSearchAddressFeignClient kakaoSearchAddressFeignClient;
-    private final ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     SearchPlaceService(KakaoSearchPlaceFeignClient kakaoSearchFeignClient, NaverSearchPlaceFeignClient naverSearchPlaceFeignClient, KakaoSearchAddressFeignClient kakaoSearchAddressFeignClient) {
         this.kakaoSearchFeignClient = kakaoSearchFeignClient;
         this.naverSearchPlaceFeignClient = naverSearchPlaceFeignClient;
         this.kakaoSearchAddressFeignClient = kakaoSearchAddressFeignClient;
-        this.objectMapper = new ObjectMapper();
     }
 
     @Override
     public String SearchPlace(String keyword) throws JsonProcessingException {
-        JsonNode kakaoPlaceListNode = kakaoSearchFeignClient.search(keyword).path("documents");
-        List<KakaoPlace> kakaoPlaces = objectMapper.readValue(kakaoPlaceListNode.toString(), new TypeReference<List<KakaoPlace>>() {});
+        List<KakaoPlace> kakaoPlaceList = kakaoPlaceList(keyword);
+        List<NaverPlace> naverPlaceList = naverPlaceList(keyword);
+        convertNaverAddressToKakaoAddress(naverPlaceList);
+        return objectMapper
+                .writer()
+                .withRootName("placeList")
+                .writeValueAsString(responsePlaceList(kakaoPlaceList, naverPlaceList));
+    }
 
+    private List<NaverPlace> naverPlaceList(String keyword) throws JsonProcessingException {
         JsonNode naverPlaceListNode = naverSearchPlaceFeignClient.search(keyword).path("items");
-        List<NaverPlace> naverPlaces = objectMapper.readValue(naverPlaceListNode.toString(), new TypeReference<List<NaverPlace>>() {});
+        return objectMapper.readValue(naverPlaceListNode.toString(), new TypeReference<List<NaverPlace>>() {});
+    }
 
-        for (Place naverPlace : naverPlaces) {
+    private List<KakaoPlace> kakaoPlaceList(String keyword) throws JsonProcessingException {
+        JsonNode kakaoPlaceListNode = kakaoSearchFeignClient.search(keyword).path("documents");
+        return objectMapper.readValue(kakaoPlaceListNode.toString(), new TypeReference<List<KakaoPlace>>() {});
+    }
+
+    // 네이버의 주소 표기를 카카오의 표기 방식과 일치시키기 위해 카카오 주소 검색 API V2를 사옹
+    private void convertNaverAddressToKakaoAddress(List<NaverPlace> naverPlaceList) throws JsonProcessingException {
+        for (Place naverPlace : naverPlaceList) {
             String naverAddress = naverPlace.getAddress();
-            JsonNode kakaoSearchAddressJson = kakaoSearchAddressFeignClient.search(naverAddress);
-            List<KakaoAddress> kakaoSearchedAddressList = objectMapper.readValue(kakaoSearchAddressJson.path("documents").toString(), new TypeReference<List<KakaoAddress>>() {});
+            JsonNode kakaoSearchAddressNode = kakaoSearchAddressFeignClient.search(naverAddress);
+            List<KakaoAddress> kakaoSearchedAddressList = objectMapper.readValue(kakaoSearchAddressNode.path("documents").toString(), new TypeReference<List<KakaoAddress>>() {});
             if (!kakaoSearchedAddressList.isEmpty()) {
                 String firstSearchAddress = kakaoSearchedAddressList.get(0).getAddress_name();
                 naverPlace.setAddress(firstSearchAddress);
             }
         }
+    }
 
-        PlaceListMergeEngine placeMergeEngine = new PlaceListMergeEngine(kakaoPlaces, naverPlaces);
-        placeMergeEngine.merge();
-
-        List<ResponsePlace> mergedPlaceList = placeMergeEngine.getMergedPlaceList();
-        return objectMapper
-                .writer()
-                .withRootName("placeList")
-                .writeValueAsString(mergedPlaceList);
+    private List<ResponsePlace> responsePlaceList(List<KakaoPlace> kakaoPlaceList, List<NaverPlace> naverPlaceList) {
+        return new PlaceListMergeEngine(kakaoPlaceList, naverPlaceList).merge();
     }
 
 }

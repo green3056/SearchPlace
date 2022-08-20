@@ -14,7 +14,7 @@ public class PlaceListMergeEngine {
         this.naverPlaceList = new ArrayList<>(naverPlaceList);
     }
 
-    public void merge() {
+    public List<ResponsePlace> merge() {
         for (Place kakaoPlace : kakaoPlaceList) {
             for (Place naverPlace : naverPlaceList) {
                 ResponsePlace kakaoResponsePlace = kakaoPlace.toResponsePlace();
@@ -27,17 +27,18 @@ public class PlaceListMergeEngine {
                 }
             }
         }
-        addResponseKakaoPlaceList();
-        addResponseNaverPlaceList();
+        addRemainingResponseKakaoPlaces();
+        addRemainingResponseNaverPlaces();
+        return mergedPlaceList;
     }
 
-    private void addResponseKakaoPlaceList() {
+    private void addRemainingResponseKakaoPlaces() {
         kakaoPlaceList.stream()
                 .filter(place -> !place.getTitle().equals(""))
                 .forEach(place -> mergedPlaceList.add(place.toResponsePlace()));
     }
 
-    private void addResponseNaverPlaceList() {
+    private void addRemainingResponseNaverPlaces() {
         naverPlaceList.stream()
                 .filter(place -> !place.getTitle().equals(""))
                 .forEach(place -> mergedPlaceList.add(place.toResponsePlace()));
