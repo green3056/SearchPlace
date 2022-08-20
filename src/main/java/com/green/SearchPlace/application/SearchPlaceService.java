@@ -8,7 +8,10 @@ import com.green.SearchPlace.application.port.in.SearchPlaceUseCase;
 import com.green.SearchPlace.application.port.out.KakaoSearchAddressFeignClient;
 import com.green.SearchPlace.application.port.out.KakaoSearchPlaceFeignClient;
 import com.green.SearchPlace.application.port.out.NaverSearchPlaceFeignClient;
-import com.green.SearchPlace.domain.*;
+import com.green.SearchPlace.domain.KakaoPlace;
+import com.green.SearchPlace.domain.NaverPlace;
+import com.green.SearchPlace.domain.PlaceListMergeEngine;
+import com.green.SearchPlace.domain.ResponsePlace;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,7 +55,7 @@ class SearchPlaceService implements SearchPlaceUseCase {
     }
 
     private List<ResponsePlace> responsePlaceList(List<KakaoPlace> kakaoPlaceList, List<NaverPlace> naverPlaceList) {
-        return new PlaceListMergeEngine(kakaoPlaceList, naverPlaceList).merge();
+        return new PlaceListMergeEngine(kakaoPlaceList, naverPlaceList).mergedResponsePlaceList();
     }
 
 }

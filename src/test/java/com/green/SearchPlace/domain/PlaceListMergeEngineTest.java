@@ -31,12 +31,12 @@ class PlaceListMergeEngineTest {
         List<NaverPlace> naverPlaceList = objectMapper.readValue(naverPlaceListJson, new TypeReference<List<NaverPlace>>() {});
 
         PlaceListMergeEngine placeMergeEngine = new PlaceListMergeEngine(kakaoPlaceList, naverPlaceList);
-        placeMergeEngine.merge();
+        List<ResponsePlace> responsePlaceList = placeMergeEngine.mergedResponsePlaceList();
 
-        Assertions.assertEquals("해성막창집 본점", placeMergeEngine.getMergedPlaceList().get(0).getTitle());
-        Assertions.assertEquals("백화양곱창 6호", placeMergeEngine.getMergedPlaceList().get(1).getTitle());
-        Assertions.assertEquals("곱 마포점", placeMergeEngine.getMergedPlaceList().get(2).getTitle());
-        Assertions.assertEquals(7, placeMergeEngine.getMergedPlaceList().size());
+        Assertions.assertEquals("해성막창집 본점", responsePlaceList.get(0).getTitle());
+        Assertions.assertEquals("백화양곱창 6호", responsePlaceList.get(1).getTitle());
+        Assertions.assertEquals("곱 마포점", responsePlaceList.get(2).getTitle());
+        Assertions.assertEquals(7, responsePlaceList.size());
     }
 
     @Test
@@ -56,12 +56,12 @@ class PlaceListMergeEngineTest {
         List<NaverPlace> naverPlaceList = objectMapper.readValue(naverPlaceListJson, new TypeReference<List<NaverPlace>>() {});
 
         PlaceListMergeEngine placeMergeEngine = new PlaceListMergeEngine(kakaoPlaceList, naverPlaceList);
-        placeMergeEngine.merge();
+        List<ResponsePlace> responsePlaceList = placeMergeEngine.mergedResponsePlaceList();
 
-        Assertions.assertEquals("별미곱창 본점", placeMergeEngine.getMergedPlaceList().get(0).getTitle());
-        Assertions.assertEquals("세광양대창 교대본점", placeMergeEngine.getMergedPlaceList().get(1).getTitle());
-        Assertions.assertEquals("백화양<b>곱창</b>", placeMergeEngine.getMergedPlaceList().get(2).getTitle());
-        Assertions.assertEquals(6, placeMergeEngine.getMergedPlaceList().size());
+        Assertions.assertEquals("별미곱창 본점", responsePlaceList.get(0).getTitle());
+        Assertions.assertEquals("세광양대창 교대본점", responsePlaceList.get(1).getTitle());
+        Assertions.assertEquals("백화양<b>곱창</b>", responsePlaceList.get(2).getTitle());
+        Assertions.assertEquals(6, responsePlaceList.size());
     }
 
     @Test
@@ -79,9 +79,8 @@ class PlaceListMergeEngineTest {
         List<NaverPlace> naverPlaceList = objectMapper.readValue(naverPlaceListJson, new TypeReference<List<NaverPlace>>() {});
 
         PlaceListMergeEngine placeMergeEngine = new PlaceListMergeEngine(kakaoPlaceList, naverPlaceList);
-        placeMergeEngine.merge();
 
-        Assertions.assertEquals(4, placeMergeEngine.getMergedPlaceList().size());
+        Assertions.assertEquals(4, placeMergeEngine.mergedResponsePlaceList().size());
     }
 
     @Test
@@ -96,9 +95,8 @@ class PlaceListMergeEngineTest {
         List<NaverPlace> naverPlaceList = objectMapper.readValue(naverPlaceListJson, new TypeReference<List<NaverPlace>>() {});
 
         PlaceListMergeEngine placeMergeEngine = new PlaceListMergeEngine(kakaoPlaceList, naverPlaceList);
-        placeMergeEngine.merge();
 
-        Assertions.assertEquals(1, placeMergeEngine.getMergedPlaceList().size());
+        Assertions.assertEquals(1, placeMergeEngine.mergedResponsePlaceList().size());
     }
 
     @Test
@@ -112,9 +110,8 @@ class PlaceListMergeEngineTest {
         List<NaverPlace> naverPlaceList = objectMapper.readValue(naverPlaceListJson, new TypeReference<List<NaverPlace>>() {});
 
         PlaceListMergeEngine placeMergeEngine = new PlaceListMergeEngine(kakaoPlaceList, naverPlaceList);
-        placeMergeEngine.merge();
 
-        Assertions.assertEquals(0, placeMergeEngine.getMergedPlaceList().size());
+        Assertions.assertEquals(0, placeMergeEngine.mergedResponsePlaceList().size());
     }
 
 }
