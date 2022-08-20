@@ -8,7 +8,7 @@ import com.green.SearchPlace.application.port.out.KakaoSearchAddressFeignClient;
 import com.green.SearchPlace.application.port.out.KakaoSearchPlaceFeignClient;
 import com.green.SearchPlace.application.port.out.NaverSearchPlaceFeignClient;
 import com.green.SearchPlace.application.port.out.QueryCountRepository;
-import com.green.SearchPlace.domain.Place;
+import com.green.SearchPlace.domain.KakaoPlace;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -76,7 +76,7 @@ class PlaceListServiceTest {
         keywordQuery.ifPresent(query -> Assertions.assertEquals(1, query.getCount()));
         // 카카오, 네이버 Place List 병합 결과를 확인합니다.
         String resultJson = objectMapper.readTree(result).path("placeList").toString();
-        List<Place> resultList = objectMapper.readValue(resultJson, new TypeReference<List<Place>>() {});
+        List<KakaoPlace> resultList = objectMapper.readValue(resultJson, new TypeReference<List<KakaoPlace>>() {});
         Assertions.assertEquals("해성막창집 본점", resultList.get(0).getTitle());
         Assertions.assertEquals("백화양곱창 6호", resultList.get(1).getTitle());
         Assertions.assertEquals("곱 마포점", resultList.get(2).getTitle());

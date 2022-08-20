@@ -5,11 +5,11 @@ import java.util.List;
 
 public class PlaceListMergeEngine {
 
-    private final List<Place> kakaoPlaceList;
-    private final List<Place> naverPlaceList;
+    private final List<KakaoPlace> kakaoPlaceList;
+    private final List<NaverPlace> naverPlaceList;
     private final List<ResponsePlace> mergedPlaceList = new ArrayList<>();
 
-    public PlaceListMergeEngine(List<Place> kakaoPlaceList, List<Place> naverPlaceList) {
+    public PlaceListMergeEngine(List<KakaoPlace> kakaoPlaceList, List<NaverPlace> naverPlaceList) {
         this.kakaoPlaceList = new ArrayList<>(kakaoPlaceList);
         this.naverPlaceList = new ArrayList<>(naverPlaceList);
     }
@@ -17,8 +17,8 @@ public class PlaceListMergeEngine {
     public void merge() {
         for (Place kakaoPlace : kakaoPlaceList) {
             for (Place naverPlace : naverPlaceList) {
-                ResponsePlace kakaoResponsePlace = kakaoPlace.toResponsePlace("kakao");
-                ResponsePlace naverResponsePlace = naverPlace.toResponsePlace("naver");
+                ResponsePlace kakaoResponsePlace = kakaoPlace.toResponsePlace();
+                ResponsePlace naverResponsePlace = naverPlace.toResponsePlace();
                 if (kakaoResponsePlace.equals(naverResponsePlace)){
                     mergedPlaceList.add(kakaoResponsePlace);
                     kakaoPlace.setTitle("");
@@ -27,16 +27,20 @@ public class PlaceListMergeEngine {
                 }
             }
         }
-        for (Place kakaoPlace : kakaoPlaceList) {
-            if (!kakaoPlace.getTitle().equals("")) {
-                mergedPlaceList.add(kakaoPlace.toResponsePlace("kakao"));
-            }
-        }
-        for (Place naverPlace : naverPlaceList) {
-            if (!naverPlace.getTitle().equals("")) {
-                mergedPlaceList.add(naverPlace.toResponsePlace("naver"));
-            }
-        }
+        addResponseKakaoPlaceList();
+        addResponseNaverPlaceList();
+    }
+
+    private void addResponseKakaoPlaceList() {
+        kakaoPlaceList.stream()
+                .filter(place -> !place.getTitle().equals(""))
+                .forEach(place -> mergedPlaceList.add(place.toResponsePlace()));
+    }
+
+    private void addResponseNaverPlaceList() {
+        naverPlaceList.stream()
+                .filter(place -> !place.getTitle().equals(""))
+                .forEach(place -> mergedPlaceList.add(place.toResponsePlace()));
     }
 
     public List<ResponsePlace> getMergedPlaceList() {

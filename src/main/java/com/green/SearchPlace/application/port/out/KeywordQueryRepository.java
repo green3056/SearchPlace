@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface KeywordQueryRepository extends CrudRepository<KeywordQuery, String> {
-    List<KeywordQuery> findTop10ByOrderByCountDescKeywordAsc();
+    List<KeywordQuery> findTop10ByOrderByCountDesc();
 }

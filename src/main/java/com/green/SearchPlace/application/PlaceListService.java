@@ -9,10 +9,7 @@ import com.green.SearchPlace.application.port.out.KakaoSearchAddressFeignClient;
 import com.green.SearchPlace.application.port.out.KakaoSearchPlaceFeignClient;
 import com.green.SearchPlace.application.port.out.NaverSearchPlaceFeignClient;
 import com.green.SearchPlace.application.port.out.QueryCountRepository;
-import com.green.SearchPlace.domain.KakaoAddress;
-import com.green.SearchPlace.domain.Place;
-import com.green.SearchPlace.domain.PlaceListMergeEngine;
-import com.green.SearchPlace.domain.ResponsePlace;
+import com.green.SearchPlace.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,10 +44,10 @@ class PlaceListService implements PlaceListUseCase {
         }
 
         JsonNode kakaoPlaceListNode = kakaoSearchFeignClient.search(keyword).path("documents");
-        List<Place> kakaoPlaces = objectMapper.readValue(kakaoPlaceListNode.toString(), new TypeReference<List<Place>>() {});
+        List<KakaoPlace> kakaoPlaces = objectMapper.readValue(kakaoPlaceListNode.toString(), new TypeReference<List<KakaoPlace>>() {});
 
         JsonNode naverPlaceListNode = naverSearchPlaceFeignClient.search(keyword).path("items");
-        List<Place> naverPlaces = objectMapper.readValue(naverPlaceListNode.toString(), new TypeReference<List<Place>>() {});
+        List<NaverPlace> naverPlaces = objectMapper.readValue(naverPlaceListNode.toString(), new TypeReference<List<NaverPlace>>() {});
 
         for (Place naverPlace : naverPlaces) {
             String naverAddress = naverPlace.getAddress();

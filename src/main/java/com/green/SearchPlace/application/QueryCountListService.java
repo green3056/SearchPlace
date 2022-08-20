@@ -21,6 +21,6 @@ public class QueryCountListService implements QueryCountListUseCase {
         return objectMapper
                 .writer()
                 .withRootName("keywordQueryCountList")
-                .writeValueAsString(keywordQueryRepository.findTop10ByOrderByCountDescKeywordAsc());
+                .writeValueAsString(keywordQueryRepository.findTop10ByOrderByCountDesc());
     }
 }
