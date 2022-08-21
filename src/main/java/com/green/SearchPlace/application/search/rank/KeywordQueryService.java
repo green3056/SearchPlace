@@ -33,7 +33,8 @@ public class KeywordQueryService implements KeywordQueryUseCase {
         KeywordQuery keywordQuery = keywordQueryRepository.findByKeyword(keyword).orElse(null);
         if (keywordQuery == null) {
             keywordQueryRepository.save(new KeywordQuery(keyword, 1L));
-        } else {
+        }
+        else {
             keywordQuery.implementCount();
             keywordQueryRepository.save(keywordQuery);
         }

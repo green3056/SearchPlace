@@ -1,4 +1,4 @@
-package com.green.SearchPlace.adapter.in.web;
+package com.green.SearchPlace.adapter.in.web.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.green.SearchPlace.application.port.in.KeywordQueryUseCase;
@@ -19,20 +19,11 @@ public class KeywordQueryCountRestController {
     }
 
     @GetMapping("/v1/place/rank")
-    public ResponseEntity<String> placeKeywordQueryCountTop10() {
-        try {
-            return ResponseEntity
-                    .ok()
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(keywordQueryService.keywordQueryCountTop10());
-        }
-        catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return ResponseEntity
-                    .internalServerError()
-                    .contentType(MediaType.TEXT_PLAIN)
-                    .body("JsonProcessingException");
-        }
+    public ResponseEntity<String> placeKeywordQueryCountTop10() throws JsonProcessingException {
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(keywordQueryService.keywordQueryCountTop10());
     }
 
 }

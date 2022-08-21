@@ -3,6 +3,7 @@ package com.green.SearchPlace.application.search.place;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.green.SearchPlace.application.port.in.SearchPlaceUseCase;
+import com.green.SearchPlace.adapter.in.web.exception.APICallException;
 import com.green.SearchPlace.domain.place.KakaoPlace;
 import com.green.SearchPlace.domain.place.NaverPlace;
 import com.green.SearchPlace.domain.place.PlaceListMergeEngine;
@@ -32,6 +33,9 @@ public class PlaceSerachService implements SearchPlaceUseCase {
     public String SearchPlace(String keyword) throws JsonProcessingException {
         List<KakaoPlace> kakaoPlaceList = kakaoPlaceSearch.placeList(keyword);
         List<NaverPlace> naverPlaceList = naverPlaceSearch.placeList(keyword);
+        if (kakaoPlaceSearch.getIsError() && naverPlaceSearch.getIsError()) {
+            throw new APICallException("Both kakao and naver API call were fail.");
+        }
 
         // 여러 개의 장소 리스트를 병합하기 위해 카카오 주소 검색 API V2를 사옹하여 카카오의 주소 표기 방식으로 통일
         new AddressConverter<>(naverPlaceList, kakaoAddressSearch).convertToKakaoAddress();
