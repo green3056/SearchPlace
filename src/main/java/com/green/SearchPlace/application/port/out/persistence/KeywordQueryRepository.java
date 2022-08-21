@@ -1,4 +1,4 @@
-package com.green.SearchPlace.application.port.out;
+package com.green.SearchPlace.application.port.out.persistence;
 
 import com.green.SearchPlace.domain.KeywordQuery;
 import org.springframework.data.repository.CrudRepository;

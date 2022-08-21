@@ -1,4 +1,4 @@
-package com.green.SearchPlace.domain;
+package com.green.SearchPlace.domain.place;
 
 import java.util.ArrayList;
 import java.util.List;

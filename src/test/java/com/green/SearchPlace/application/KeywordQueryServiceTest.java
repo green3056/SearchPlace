@@ -1,6 +1,6 @@
 package com.green.SearchPlace.application;
 
-import com.green.SearchPlace.application.port.out.KeywordQueryRepository;
+import com.green.SearchPlace.application.port.out.persistence.KeywordQueryRepository;
 import com.green.SearchPlace.domain.KeywordQuery;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -13,14 +13,10 @@ import java.util.List;
 
 @DataJpaTest
 @ExtendWith(SpringExtension.class)
-class QueryCountListServiceTest {
-
-    private final KeywordQueryRepository keywordQueryRepository;
+class KeywordQueryServiceTest {
 
     @Autowired
-    public QueryCountListServiceTest(KeywordQueryRepository keywordQueryRepository) {
-        this.keywordQueryRepository = keywordQueryRepository;
-    }
+    private KeywordQueryRepository keywordQueryRepository;
 
     @Test
     public void keywordQueryCountTop10() {
@@ -72,4 +68,5 @@ class QueryCountListServiceTest {
         Assertions.assertEquals(2, list.get(8).getCount());
         Assertions.assertEquals(2, list.get(9).getCount());
     }
+
 }

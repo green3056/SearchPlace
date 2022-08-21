@@ -1,4 +1,4 @@
-package com.green.SearchPlace.application.configuration;
+package com.green.SearchPlace.application.port.out.api.kakao;
 
 import feign.RequestInterceptor;
 import org.springframework.beans.factory.annotation.Value;

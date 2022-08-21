@@ -1,7 +1,6 @@
-package com.green.SearchPlace.application.port.out;
+package com.green.SearchPlace.application.port.out.api.naver;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.green.SearchPlace.application.configuration.NaverAuthFeignConfig;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;

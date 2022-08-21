@@ -3,6 +3,10 @@ package com.green.SearchPlace.domain;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.green.SearchPlace.domain.place.KakaoPlace;
+import com.green.SearchPlace.domain.place.NaverPlace;
+import com.green.SearchPlace.domain.place.PlaceListMergeEngine;
+import com.green.SearchPlace.domain.place.ResponsePlace;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -10,9 +14,10 @@ import java.util.List;
 
 class PlaceListMergeEngineTest {
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
     @Test
     public void Duplicate_Place_Is_First() throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
         String kakaoPlaceListJson = "[" +
                 "{\"place_name\":\"해성막창집 본점\",\"address_name\":\"부산 해운대구 중동 1732\",\"road_address_name\":\"부산 해운대구 중동1로19번길 29\"}," +
                 "{\"place_name\":\"백화양곱창 6호\",\"address_name\":\"부산 중구 남포동6가 32\",\"road_address_name\":\"부산 중구 자갈치로23번길 6\"}," +
@@ -41,7 +46,6 @@ class PlaceListMergeEngineTest {
 
     @Test
     public void Kakao_Place_Is_First() throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
         String kakaoPlaceListJson = "[" +
                 "{\"place_name\":\"별미곱창 본점\",\"address_name\":\"서울 송파구 방이동 64-1\",\"road_address_name\":\"서울 송파구 오금로11길 14\"}," +
                 "{\"place_name\":\"세광양대창 교대본점\",\"address_name\":\"서울 서초구 서초동 1571-19\",\"road_address_name\":\"서울 서초구 반포대로28길 79\"}" +
@@ -66,7 +70,6 @@ class PlaceListMergeEngineTest {
 
     @Test
     public void Kakao_Place_List_Is_Empty() throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
         String kakaoPlaceListJson = "[" +
                 "]";
         List<KakaoPlace> kakaoPlaceList = objectMapper.readValue(kakaoPlaceListJson, new TypeReference<List<KakaoPlace>>() {});
@@ -85,7 +88,6 @@ class PlaceListMergeEngineTest {
 
     @Test
     public void Naver_Place_List_Is_Empty() throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
         String kakaoPlaceListJson = "[" +
                 "{\"place_name\":\"해성막창집 본점\",\"address_name\":\"부산 해운대구 중동 1732\",\"road_address_name\":\"부산 해운대구 중동1로19번길 29\"}" +
                 "]";
@@ -101,7 +103,6 @@ class PlaceListMergeEngineTest {
 
     @Test
     public void Place_Lists_Are_Empty() throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
         String kakaoPlaceListJson = "[" +
                 "]";
         List<KakaoPlace> kakaoPlaceList = objectMapper.readValue(kakaoPlaceListJson, new TypeReference<List<KakaoPlace>>() {});

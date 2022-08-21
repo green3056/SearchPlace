@@ -1,9 +1,9 @@
-package com.green.SearchPlace.domain;
+package com.green.SearchPlace.domain.place;
 
 public class KakaoPlace extends Place{
 
     @Override
-    ResponsePlace toResponsePlace() {
+    public ResponsePlace toResponsePlace() {
         return new ResponsePlace(getTitle(), getAddress(), "kakao");
     }
 

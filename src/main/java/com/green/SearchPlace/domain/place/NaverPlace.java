@@ -1,9 +1,9 @@
-package com.green.SearchPlace.domain;
+package com.green.SearchPlace.domain.place;
 
 public class NaverPlace extends Place{
 
     @Override
-    ResponsePlace toResponsePlace() {
+    public ResponsePlace toResponsePlace() {
         return new ResponsePlace(getTitle(), getAddress(), "naver");
     }
 

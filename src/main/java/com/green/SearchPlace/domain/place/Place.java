@@ -1,9 +1,7 @@
-package com.green.SearchPlace.domain;
+package com.green.SearchPlace.domain.place;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,6 +21,6 @@ abstract public class Place {
     @JsonAlias({"roadAddress", "road_address_name"})
     private String roadAddress;
 
-    abstract ResponsePlace toResponsePlace();
+    abstract public ResponsePlace toResponsePlace();
 
 }

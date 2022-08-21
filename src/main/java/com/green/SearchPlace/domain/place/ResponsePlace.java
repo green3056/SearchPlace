@@ -1,4 +1,4 @@
-package com.green.SearchPlace.domain;
+package com.green.SearchPlace.domain.place;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +13,7 @@ public class ResponsePlace {
     private String address;
     private String provider;
 
-    ResponsePlace(String title, String address, String provider) {
+    public ResponsePlace(String title, String address, String provider) {
         if (title == null) {
             throw new IllegalArgumentException("title is can not be null.");
         }
