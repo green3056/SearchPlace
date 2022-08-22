@@ -19,14 +19,14 @@ import java.util.List;
 @Service
 public class PlaceSearchService implements PlaceSearchUseCase {
 
-    private final KakaoPlaceSearch kakaoPlaceSearch;
-    private final NaverPlaceSearch naverPlaceSearch;
+    private final PlaceSearch<KakaoPlace> kakaoPlaceSearch;
+    private final PlaceSearch<NaverPlace> naverPlaceSearch;
     private final KakaoAddressSearch kakaoAddressSearch;
     private final PlaceKeywordQueryRankService placeKeywordQueryRankService;
     private final ObjectMapper objectMapper;
 
     @Autowired
-    public PlaceSearchService(KakaoPlaceSearch kakaoPlaceSearch, NaverPlaceSearch naverPlaceSearch, KakaoAddressSearch kakaoAddressSearch, PlaceKeywordQueryRankService placeKeywordQueryRankService, ObjectMapper objectMapper) {
+    public PlaceSearchService(PlaceSearch<KakaoPlace> kakaoPlaceSearch, PlaceSearch<NaverPlace> naverPlaceSearch, KakaoAddressSearch kakaoAddressSearch, PlaceKeywordQueryRankService placeKeywordQueryRankService, ObjectMapper objectMapper) {
         this.kakaoPlaceSearch = kakaoPlaceSearch;
         this.naverPlaceSearch = naverPlaceSearch;
         this.kakaoAddressSearch = kakaoAddressSearch;
@@ -39,7 +39,7 @@ public class PlaceSearchService implements PlaceSearchUseCase {
         Keyword keyword = command.getKeyword();
         List<KakaoPlace> kakaoPlaceList = kakaoPlaceSearch.placeList(keyword);
         List<NaverPlace> naverPlaceList = naverPlaceSearch.placeList(keyword);
-        if (kakaoPlaceSearch.getIsError() && naverPlaceSearch.getIsError()) {
+        if (kakaoPlaceSearch.isError() && naverPlaceSearch.isError()) {
             throw new APICallException("Both kakao and naver API call were fail.");
         }
 

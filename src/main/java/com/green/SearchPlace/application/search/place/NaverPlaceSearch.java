@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 @Slf4j
 @Getter
-public class NaverPlaceSearch {
+public class NaverPlaceSearch implements PlaceSearch<NaverPlace> {
 
     private final NaverSearchPlaceFeignClient naverSearchPlaceFeignClient;
     private final ObjectMapper objectMapper;
@@ -39,6 +39,10 @@ public class NaverPlaceSearch {
             isError = true;
             return new ArrayList<>();
         }
+    }
+
+    public Boolean isError() {
+        return isError;
     }
 
 }

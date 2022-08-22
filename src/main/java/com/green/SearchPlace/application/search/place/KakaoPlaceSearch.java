@@ -16,8 +16,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-@Getter
-public class KakaoPlaceSearch {
+public class KakaoPlaceSearch implements PlaceSearch<KakaoPlace> {
 
     private final KakaoSearchPlaceFeignClient kakaoSearchFeignClient;
     private final ObjectMapper objectMapper;
@@ -39,6 +38,10 @@ public class KakaoPlaceSearch {
             isError = true;
             return new ArrayList<>();
         }
+    }
+
+    public Boolean isError() {
+        return isError;
     }
 
 }
