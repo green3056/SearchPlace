@@ -1,0 +1,29 @@
+spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  datasource:
+    url: jdbc:h2:~/test
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create
+    generate-ddl: false
+    show-sql: true
+    database-platform: org.hibernate.dialect.H2Dialect
+    properties:
+      hibernate.format_sql: true
+logging:
+  level:
+    org:
+      hibernate: info
+
+restApi:
+  kakao:
+    restApiKey: KakaoAK a6633f33f3fbf2da932a2bc26a1c34d7
+  naver:
+    clientId: XrWpwG1nY5k4oy4pYJlK
+    clientSecret: SjAdElo319
