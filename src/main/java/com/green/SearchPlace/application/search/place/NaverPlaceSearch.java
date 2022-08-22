@@ -3,6 +3,7 @@ package com.green.SearchPlace.application.search.place;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.green.SearchPlace.domain.keyword.Keyword;
 import com.green.SearchPlace.application.port.out.api.naver.NaverSearchPlaceFeignClient;
 import com.green.SearchPlace.domain.place.NaverPlace;
 import lombok.Getter;
@@ -28,9 +29,9 @@ public class NaverPlaceSearch {
         this.objectMapper = objectMapper;
     }
 
-    public List<NaverPlace> placeList(String keyword) {
+    public List<NaverPlace> placeList(Keyword keyword) {
         try {
-            JsonNode naverPlaceListNode = naverSearchPlaceFeignClient.search(keyword).path("items");
+            JsonNode naverPlaceListNode = naverSearchPlaceFeignClient.search(keyword.toString()).path("items");
             return objectMapper.readValue(naverPlaceListNode.toString(), new TypeReference<List<NaverPlace>>() {});
         }
         catch (Exception e) {

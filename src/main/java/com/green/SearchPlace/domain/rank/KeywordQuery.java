@@ -1,4 +1,4 @@
-package com.green.SearchPlace.domain;
+package com.green.SearchPlace.domain.rank;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

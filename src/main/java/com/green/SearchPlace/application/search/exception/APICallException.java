@@ -1,4 +1,4 @@
-package com.green.SearchPlace.adapter.in.web.exception;
+package com.green.SearchPlace.application.search.exception;
 
 import lombok.NoArgsConstructor;
 

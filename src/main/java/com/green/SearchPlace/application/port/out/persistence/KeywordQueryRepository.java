@@ -1,6 +1,6 @@
 package com.green.SearchPlace.application.port.out.persistence;
 
-import com.green.SearchPlace.domain.KeywordQuery;
+import com.green.SearchPlace.domain.rank.KeywordQuery;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

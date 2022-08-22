@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.green.SearchPlace.adapter.in.web.controller.place.PlaceSearchCommand;
 import com.green.SearchPlace.application.port.out.api.kakao.KakaoSearchAddressFeignClient;
 import com.green.SearchPlace.application.port.out.api.kakao.KakaoSearchPlaceFeignClient;
 import com.green.SearchPlace.application.port.out.api.naver.NaverSearchPlaceFeignClient;
@@ -11,8 +12,8 @@ import com.green.SearchPlace.application.port.out.persistence.KeywordQueryReposi
 import com.green.SearchPlace.application.search.place.KakaoAddressSearch;
 import com.green.SearchPlace.application.search.place.KakaoPlaceSearch;
 import com.green.SearchPlace.application.search.place.NaverPlaceSearch;
-import com.green.SearchPlace.application.search.place.PlaceSerachService;
-import com.green.SearchPlace.domain.KeywordQuery;
+import com.green.SearchPlace.application.search.place.PlaceSearchService;
+import com.green.SearchPlace.domain.rank.KeywordQuery;
 import com.green.SearchPlace.domain.place.KakaoPlace;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -73,8 +74,8 @@ class PlaceSearchServiceTest {
         Mockito.when(kakaoSearchAddressFeignClient.search("서울특별시 마포구 망원동 482-3")).thenReturn(objectMapper.readTree("{\"documents\": []}"));
         Mockito.when(kakaoSearchAddressFeignClient.search("서울특별시 용산구 한강로1가 137-1")).thenReturn(objectMapper.readTree("{\"documents\": []}"));
 
-        PlaceSerachService placeListService = new PlaceSerachService(kakaoPlaceSearch, naverPlaceSearch, kakaoAddressSearch, objectMapper);
-        String result = placeListService.SearchPlace(SEARCH_KEYWORD);
+        PlaceSearchService placeListService = new PlaceSearchService(kakaoPlaceSearch, naverPlaceSearch, kakaoAddressSearch, objectMapper);
+        String result = placeListService.SearchPlace(new PlaceSearchCommand(SEARCH_KEYWORD));
 
         // 키워드 검색 횟수가 카운팅되고 있는지 확인합니다.
         Optional<KeywordQuery> keywordQuery = queryCountRepository.findByKeyword(SEARCH_KEYWORD);

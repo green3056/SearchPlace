@@ -1,4 +1,4 @@
-package com.green.SearchPlace.adapter.in.web.advice;
+package com.green.SearchPlace.domain.response.error;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -3,6 +3,7 @@ package com.green.SearchPlace.application.search.place;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.green.SearchPlace.domain.keyword.Keyword;
 import com.green.SearchPlace.application.port.out.api.kakao.KakaoSearchPlaceFeignClient;
 import com.green.SearchPlace.domain.place.KakaoPlace;
 import lombok.Getter;
@@ -28,9 +29,9 @@ public class KakaoPlaceSearch {
         this.objectMapper = objectMapper;
     }
 
-    public List<KakaoPlace> placeList(String keyword) {
+    public List<KakaoPlace> placeList(Keyword keyword) {
         try {
-            JsonNode kakaoPlaceListNode = kakaoSearchFeignClient.search(keyword).path("documents");
+            JsonNode kakaoPlaceListNode = kakaoSearchFeignClient.search(keyword.toString()).path("documents");
             return objectMapper.readValue(kakaoPlaceListNode.toString(), new TypeReference<List<KakaoPlace>>() {});
         }
         catch (Exception e) {

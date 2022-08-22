@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.green.SearchPlace.domain.place.KakaoPlace;
 import com.green.SearchPlace.domain.place.NaverPlace;
 import com.green.SearchPlace.domain.place.PlaceListMergeEngine;
-import com.green.SearchPlace.domain.place.ResponsePlace;
+import com.green.SearchPlace.domain.response.place.ResponsePlace;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

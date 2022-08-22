@@ -1,5 +1,7 @@
 package com.green.SearchPlace.domain.place;
 
+import com.green.SearchPlace.domain.response.place.ResponsePlace;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +17,13 @@ public class PlaceListMergeEngine {
     }
 
     public List<ResponsePlace> mergedResponsePlaceList() {
+        addPriorityPlaces();
+        addRemainingResponseKakaoPlaces();
+        addRemainingResponseNaverPlaces();
+        return mergedPlaceList;
+    }
+
+    private void addPriorityPlaces() {
         for (Place kakaoPlace : kakaoPlaceList) {
             for (Place naverPlace : naverPlaceList) {
                 ResponsePlace kakaoResponsePlace = kakaoPlace.toResponsePlace();
@@ -27,9 +36,6 @@ public class PlaceListMergeEngine {
                 }
             }
         }
-        addRemainingResponseKakaoPlaces();
-        addRemainingResponseNaverPlaces();
-        return mergedPlaceList;
     }
 
     private void addRemainingResponseKakaoPlaces() {

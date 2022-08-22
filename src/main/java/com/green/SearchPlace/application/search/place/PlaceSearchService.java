@@ -2,19 +2,21 @@ package com.green.SearchPlace.application.search.place;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.green.SearchPlace.application.port.in.SearchPlaceUseCase;
-import com.green.SearchPlace.adapter.in.web.exception.APICallException;
+import com.green.SearchPlace.adapter.in.web.controller.place.PlaceSearchCommand;
+import com.green.SearchPlace.domain.keyword.Keyword;
+import com.green.SearchPlace.application.port.in.PlaceSearchUseCase;
+import com.green.SearchPlace.application.search.exception.APICallException;
 import com.green.SearchPlace.domain.place.KakaoPlace;
 import com.green.SearchPlace.domain.place.NaverPlace;
 import com.green.SearchPlace.domain.place.PlaceListMergeEngine;
-import com.green.SearchPlace.domain.place.ResponsePlace;
+import com.green.SearchPlace.domain.response.place.ResponsePlace;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class PlaceSerachService implements SearchPlaceUseCase {
+public class PlaceSearchService implements PlaceSearchUseCase {
 
     private final KakaoPlaceSearch kakaoPlaceSearch;
     private final NaverPlaceSearch naverPlaceSearch;
@@ -22,7 +24,7 @@ public class PlaceSerachService implements SearchPlaceUseCase {
     private final ObjectMapper objectMapper;
 
     @Autowired
-    public PlaceSerachService(KakaoPlaceSearch kakaoPlaceSearch, NaverPlaceSearch naverPlaceSearch, KakaoAddressSearch kakaoAddressSearch, ObjectMapper objectMapper) {
+    public PlaceSearchService(KakaoPlaceSearch kakaoPlaceSearch, NaverPlaceSearch naverPlaceSearch, KakaoAddressSearch kakaoAddressSearch, ObjectMapper objectMapper) {
         this.kakaoPlaceSearch = kakaoPlaceSearch;
         this.naverPlaceSearch = naverPlaceSearch;
         this.kakaoAddressSearch = kakaoAddressSearch;
@@ -30,7 +32,8 @@ public class PlaceSerachService implements SearchPlaceUseCase {
     }
 
     @Override
-    public String SearchPlace(String keyword) throws JsonProcessingException {
+    public String SearchPlace(PlaceSearchCommand command) throws JsonProcessingException {
+        Keyword keyword = command.getKeyword();
         List<KakaoPlace> kakaoPlaceList = kakaoPlaceSearch.placeList(keyword);
         List<NaverPlace> naverPlaceList = naverPlaceSearch.placeList(keyword);
         if (kakaoPlaceSearch.getIsError() && naverPlaceSearch.getIsError()) {

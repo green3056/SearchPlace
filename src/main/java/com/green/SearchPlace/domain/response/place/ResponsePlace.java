@@ -1,4 +1,4 @@
-package com.green.SearchPlace.domain.place;
+package com.green.SearchPlace.domain.response.place;
 
 import lombok.Getter;
 import lombok.Setter;

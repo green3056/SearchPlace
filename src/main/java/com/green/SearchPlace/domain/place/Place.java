@@ -2,6 +2,7 @@ package com.green.SearchPlace.domain.place;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.green.SearchPlace.domain.response.place.ResponsePlace;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

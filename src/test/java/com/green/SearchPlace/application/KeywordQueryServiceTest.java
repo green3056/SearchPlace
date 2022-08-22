@@ -1,7 +1,7 @@
 package com.green.SearchPlace.application;
 
 import com.green.SearchPlace.application.port.out.persistence.KeywordQueryRepository;
-import com.green.SearchPlace.domain.KeywordQuery;
+import com.green.SearchPlace.domain.rank.KeywordQuery;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
