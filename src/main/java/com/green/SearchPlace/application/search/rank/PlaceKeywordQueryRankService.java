@@ -7,10 +7,12 @@ import com.green.SearchPlace.application.port.in.PlaceKeywordQueryRankUseCase;
 import com.green.SearchPlace.application.port.out.persistence.KeywordQueryRepository;
 import com.green.SearchPlace.domain.keyword.Keyword;
 import com.green.SearchPlace.domain.rank.KeywordQuery;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class PlaceKeywordQueryRankService implements PlaceKeywordQueryRankUseCase {
 
     private final KeywordQueryRepository keywordQueryRepository;

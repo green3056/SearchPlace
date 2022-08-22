@@ -17,6 +17,7 @@ public class AddressConverter<P extends Place> {
     }
 
     public void convertToKakaoAddress() {
+        log.info("START convertToKakaoAddress method");
         for (P place : placeList) {
             String address = place.getAddress();
             try {
@@ -31,6 +32,7 @@ public class AddressConverter<P extends Place> {
                 break;
             }
         }
+        log.info("END convertToKakaoAddress method");
     }
 
 }

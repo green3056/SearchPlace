@@ -1,10 +1,12 @@
 package com.green.SearchPlace.domain.place;
 
 import com.green.SearchPlace.domain.response.place.ResponsePlace;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class PlaceListMergeEngine <M extends Place,S extends Place>{
 
     private final List<M> mainPlaceList;
@@ -17,9 +19,11 @@ public class PlaceListMergeEngine <M extends Place,S extends Place>{
     }
 
     public List<ResponsePlace> mergedResponsePlaceList() {
+        log.info("START mergedResponsePlaceList method");
         addPriorityPlaces();
         addRemainingResponseMainPlaces();
         addRemainingResponseSubPlaces();
+        log.info("END mergedResponsePlaceList method");
         return mergedPlaceList;
     }
 

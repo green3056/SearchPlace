@@ -11,12 +11,14 @@ import com.green.SearchPlace.domain.place.KakaoPlace;
 import com.green.SearchPlace.domain.place.NaverPlace;
 import com.green.SearchPlace.domain.place.PlaceListMergeEngine;
 import com.green.SearchPlace.domain.response.place.ResponsePlace;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Slf4j
 public class PlaceSearchService implements PlaceSearchUseCase {
 
     private final PlaceSearch<KakaoPlace> kakaoPlaceSearch;
@@ -36,6 +38,7 @@ public class PlaceSearchService implements PlaceSearchUseCase {
 
     @Override
     public String responsePlaces(PlaceSearchCommand command) throws JsonProcessingException {
+        log.info("START responsePlaces method, keyword="+command.getKeyword());
         Keyword keyword = command.getKeyword();
         List<KakaoPlace> kakaoPlaceList = kakaoPlaceSearch.placeList(keyword);
         List<NaverPlace> naverPlaceList = naverPlaceSearch.placeList(keyword);
@@ -50,6 +53,8 @@ public class PlaceSearchService implements PlaceSearchUseCase {
         List<ResponsePlace> mergedPlaceList = merge(kakaoPlaceList, naverPlaceList);
 
         placeKeywordQueryRankService.implementKeywordQueryCount(command);
+
+        log.info("END responsePlaces method");
         return objectMapper
                 .writer()
                 .withRootName("placeList")
