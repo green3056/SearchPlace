@@ -52,8 +52,8 @@ public class PlaceSearchService implements PlaceSearchUseCase {
                 .writeValueAsString(mergedPlaceList);
     }
 
-    private List<ResponsePlace> merge(List<KakaoPlace> kakaoPlaceList, List<NaverPlace> naverPlaceList) {
-        return new PlaceListMergeEngine(kakaoPlaceList, naverPlaceList).mergedResponsePlaceList();
+    private List<ResponsePlace> merge(List<KakaoPlace> mainPlaceList, List<NaverPlace> subPlaceList) {
+        return new PlaceListMergeEngine<>(mainPlaceList, subPlaceList).mergedResponsePlaceList();
     }
 
 }

@@ -5,47 +5,47 @@ import com.green.SearchPlace.domain.response.place.ResponsePlace;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlaceListMergeEngine {
+public class PlaceListMergeEngine <M extends Place,S extends Place>{
 
-    private final List<KakaoPlace> kakaoPlaceList;
-    private final List<NaverPlace> naverPlaceList;
+    private final List<M> mainPlaceList;
+    private final List<S> subPlaceList;
     private final List<ResponsePlace> mergedPlaceList = new ArrayList<>();
 
-    public PlaceListMergeEngine(List<KakaoPlace> kakaoPlaceList, List<NaverPlace> naverPlaceList) {
-        this.kakaoPlaceList = new ArrayList<>(kakaoPlaceList);
-        this.naverPlaceList = new ArrayList<>(naverPlaceList);
+    public PlaceListMergeEngine(List<M> mainPlaceList, List<S> subPlaceList) {
+        this.mainPlaceList = new ArrayList<>(mainPlaceList);
+        this.subPlaceList = new ArrayList<>(subPlaceList);
     }
 
     public List<ResponsePlace> mergedResponsePlaceList() {
         addPriorityPlaces();
-        addRemainingResponseKakaoPlaces();
-        addRemainingResponseNaverPlaces();
+        addRemainingResponseMainPlaces();
+        addRemainingResponseSubPlaces();
         return mergedPlaceList;
     }
 
     private void addPriorityPlaces() {
-        for (Place kakaoPlace : kakaoPlaceList) {
-            for (Place naverPlace : naverPlaceList) {
-                ResponsePlace kakaoResponsePlace = kakaoPlace.toResponsePlace();
-                ResponsePlace naverResponsePlace = naverPlace.toResponsePlace();
-                if (kakaoResponsePlace.equals(naverResponsePlace)){
-                    mergedPlaceList.add(kakaoResponsePlace);
-                    kakaoPlace.setTitle("");
-                    naverPlace.setTitle("");
+        for (M mainPlaceList : mainPlaceList) {
+            for (S subPlaceList : subPlaceList) {
+                ResponsePlace mainResponsePlace = mainPlaceList.toResponsePlace();
+                ResponsePlace subResponsePlace = subPlaceList.toResponsePlace();
+                if (mainResponsePlace.equals(subResponsePlace)){
+                    mergedPlaceList.add(mainResponsePlace);
+                    mainPlaceList.setTitle("");
+                    subPlaceList.setTitle("");
                     break;
                 }
             }
         }
     }
 
-    private void addRemainingResponseKakaoPlaces() {
-        kakaoPlaceList.stream()
+    private void addRemainingResponseMainPlaces() {
+        mainPlaceList.stream()
                 .filter(place -> !place.getTitle().equals(""))
                 .forEach(place -> mergedPlaceList.add(place.toResponsePlace()));
     }
 
-    private void addRemainingResponseNaverPlaces() {
-        naverPlaceList.stream()
+    private void addRemainingResponseSubPlaces() {
+        subPlaceList.stream()
                 .filter(place -> !place.getTitle().equals(""))
                 .forEach(place -> mergedPlaceList.add(place.toResponsePlace()));
     }
