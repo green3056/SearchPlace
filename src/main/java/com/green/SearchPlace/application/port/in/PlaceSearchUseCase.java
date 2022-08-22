@@ -5,6 +5,6 @@ import com.green.SearchPlace.adapter.in.web.controller.place.PlaceSearchCommand;
 
 public interface PlaceSearchUseCase {
 
-    String SearchPlace(PlaceSearchCommand command) throws JsonProcessingException;
+    String responsePlaces(PlaceSearchCommand command) throws JsonProcessingException;
 
 }

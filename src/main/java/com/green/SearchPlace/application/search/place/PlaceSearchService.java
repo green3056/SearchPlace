@@ -3,6 +3,7 @@ package com.green.SearchPlace.application.search.place;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.green.SearchPlace.adapter.in.web.controller.place.PlaceSearchCommand;
+import com.green.SearchPlace.application.search.rank.PlaceKeywordQueryRankService;
 import com.green.SearchPlace.domain.keyword.Keyword;
 import com.green.SearchPlace.application.port.in.PlaceSearchUseCase;
 import com.green.SearchPlace.application.search.exception.APICallException;
@@ -21,18 +22,20 @@ public class PlaceSearchService implements PlaceSearchUseCase {
     private final KakaoPlaceSearch kakaoPlaceSearch;
     private final NaverPlaceSearch naverPlaceSearch;
     private final KakaoAddressSearch kakaoAddressSearch;
+    private final PlaceKeywordQueryRankService placeKeywordQueryRankService;
     private final ObjectMapper objectMapper;
 
     @Autowired
-    public PlaceSearchService(KakaoPlaceSearch kakaoPlaceSearch, NaverPlaceSearch naverPlaceSearch, KakaoAddressSearch kakaoAddressSearch, ObjectMapper objectMapper) {
+    public PlaceSearchService(KakaoPlaceSearch kakaoPlaceSearch, NaverPlaceSearch naverPlaceSearch, KakaoAddressSearch kakaoAddressSearch, PlaceKeywordQueryRankService placeKeywordQueryRankService, ObjectMapper objectMapper) {
         this.kakaoPlaceSearch = kakaoPlaceSearch;
         this.naverPlaceSearch = naverPlaceSearch;
         this.kakaoAddressSearch = kakaoAddressSearch;
+        this.placeKeywordQueryRankService = placeKeywordQueryRankService;
         this.objectMapper = objectMapper;
     }
 
     @Override
-    public String SearchPlace(PlaceSearchCommand command) throws JsonProcessingException {
+    public String responsePlaces(PlaceSearchCommand command) throws JsonProcessingException {
         Keyword keyword = command.getKeyword();
         List<KakaoPlace> kakaoPlaceList = kakaoPlaceSearch.placeList(keyword);
         List<NaverPlace> naverPlaceList = naverPlaceSearch.placeList(keyword);
@@ -46,6 +49,7 @@ public class PlaceSearchService implements PlaceSearchUseCase {
         // 주소를 기준으로 비교하여 장소 리스트를 병합
         List<ResponsePlace> mergedPlaceList = merge(kakaoPlaceList, naverPlaceList);
 
+        placeKeywordQueryRankService.implementKeywordQueryCount(command);
         return objectMapper
                 .writer()
                 .withRootName("placeList")

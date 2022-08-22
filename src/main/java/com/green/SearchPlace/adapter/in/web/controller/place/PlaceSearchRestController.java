@@ -14,22 +14,18 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class PlaceSearchRestController {
     private final PlaceSearchUseCase searchPlaceService;
-    private final PlaceKeywordQueryRankUseCase keywordQueryService;
 
     public PlaceSearchRestController(PlaceSearchUseCase listPlaceService, PlaceKeywordQueryRankUseCase placeKeywordQueryRankUseCase) {
         this.searchPlaceService = listPlaceService;
-        this.keywordQueryService = placeKeywordQueryRankUseCase;
     }
 
     @GetMapping("/v1/place")
     public ResponseEntity<String> search(@RequestParam("keyword") String keyword) throws JsonProcessingException {
         PlaceSearchCommand command = new PlaceSearchCommand(keyword);
-        String response = searchPlaceService.SearchPlace(command);
-        keywordQueryService.implementKeywordQueryCount(command);
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(response);
+                .body(searchPlaceService.responsePlaces(command));
     }
 
 }

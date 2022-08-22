@@ -13,6 +13,7 @@ import com.green.SearchPlace.application.search.place.KakaoAddressSearch;
 import com.green.SearchPlace.application.search.place.KakaoPlaceSearch;
 import com.green.SearchPlace.application.search.place.NaverPlaceSearch;
 import com.green.SearchPlace.application.search.place.PlaceSearchService;
+import com.green.SearchPlace.application.search.rank.PlaceKeywordQueryRankService;
 import com.green.SearchPlace.domain.rank.KeywordQuery;
 import com.green.SearchPlace.domain.place.KakaoPlace;
 import org.junit.jupiter.api.Assertions;
@@ -45,6 +46,8 @@ class PlaceSearchServiceTest {
     private NaverPlaceSearch naverPlaceSearch;
     @Autowired
     private KeywordQueryRepository queryCountRepository;
+    @Autowired
+    private PlaceKeywordQueryRankService placeKeywordQueryRankService;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
@@ -74,8 +77,8 @@ class PlaceSearchServiceTest {
         Mockito.when(kakaoSearchAddressFeignClient.search("서울특별시 마포구 망원동 482-3")).thenReturn(objectMapper.readTree("{\"documents\": []}"));
         Mockito.when(kakaoSearchAddressFeignClient.search("서울특별시 용산구 한강로1가 137-1")).thenReturn(objectMapper.readTree("{\"documents\": []}"));
 
-        PlaceSearchService placeListService = new PlaceSearchService(kakaoPlaceSearch, naverPlaceSearch, kakaoAddressSearch, objectMapper);
-        String result = placeListService.SearchPlace(new PlaceSearchCommand(SEARCH_KEYWORD));
+        PlaceSearchService placeListService = new PlaceSearchService(kakaoPlaceSearch, naverPlaceSearch, kakaoAddressSearch, placeKeywordQueryRankService, objectMapper);
+        String result = placeListService.responsePlaces(new PlaceSearchCommand(SEARCH_KEYWORD));
 
         // 키워드 검색 횟수가 카운팅되고 있는지 확인합니다.
         Optional<KeywordQuery> keywordQuery = queryCountRepository.findByKeyword(SEARCH_KEYWORD);
